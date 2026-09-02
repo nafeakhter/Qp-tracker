@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json">
+<title>NEET PCB Tracker</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f5f7fb;color:#111827}.wrap{max-width:650px;margin:auto;padding:16px 12px 30px}
+h1{margin:3px 0;font-size:24px}.sub{color:#6b7280;font-size:14px;margin-bottom:14px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:13px;margin-top:10px}.label{font-size:12px;color:#6b7280}.big{font-size:22px;font-weight:800}
+.bar{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:9px}.fill{height:100%;width:0;background:#2563eb}
+.day{display:grid;grid-template-columns:55px 1fr 52px 52px 52px;gap:5px;align-items:center;padding:9px 4px;border-bottom:1px solid #eee}.day:last-child{border:0}
+.day.done{background:#f0fdf4}.head{text-align:center;font-size:10px;color:#6b7280;font-weight:700}.subj{display:flex;flex-direction:column;align-items:center;font-size:10px;color:#6b7280}.subj input{width:23px;height:23px}
+button{margin-top:12px;padding:10px 14px;border:1px solid #d1d5db;border-radius:11px;background:white;font-weight:650}
+@media(max-width:420px){.day{grid-template-columns:45px 1fr 47px 47px 47px}}
+</style></head><body><main class="wrap">
+<h1>NEET PCB Tracker</h1><div class="sub">30 days • 150 questions/day</div>
+<div class="stats"><div class="card"><div class="label">Full days</div><div class="big" id="days">0 / 30</div></div>
+<div class="card"><div class="label">Total</div><div class="big" id="total">0 / 4500</div></div>
+<div class="card"><div class="label">Physics</div><div class="big" id="phy">0 / 1500</div></div>
+<div class="card"><div class="label">Chemistry</div><div class="big" id="chem">0 / 1500</div></div></div>
+<div class="card"><div class="label">Overall progress</div><div class="bar"><div id="fill" class="fill"></div></div><div id="pct" class="big">0%</div></div>
+<div class="card"><div class="day"><b>Day</b><span></span><span class="head">PHY 50</span><span class="head">CHEM 50</span><span class="head">BIO 50</span></div><div id="list"></div></div>
+<button id="reset">Reset all</button>
+<script>
+const K='neet-pcb-v2';let s=JSON.parse(localStorage.getItem(K)||'null')||Array.from({length:30},()=>[0,0,0]);
+const list=document.getElementById('list');
+for(let d=0;d<30;d++){let r=document.createElement('div');r.className='day';r.innerHTML='<b>Day '+(d+1)+'</b><span></span>'+[0,1,2].map(x=>'<label class="subj"><input type="checkbox" data-d="'+d+'" data-s="'+x+'">50</label>').join('');list.appendChild(r)}
+function draw(){let t=[0,0,0];s.forEach(x=>x.forEach((v,i)=>t[i]+=v?50:0));let total=t[0]+t[1]+t[2],full=s.filter(x=>x.every(Boolean)).length,p=Math.round(total/4500*100);
+days.textContent=full+' / 30';totalEl.textContent=total+' / 4500';phy.textContent=t[0]+' / 1500';chem.textContent=t[1]+' / 1500';pct.textContent=p+'%';fill.style.width=p+'%';
+list.querySelectorAll('input').forEach(i=>i.checked=!!s[i.dataset.d][i.dataset.s]);list.querySelectorAll('.day').forEach((r,i)=>r.classList.toggle('done',s[i].every(Boolean)));localStorage.setItem(K,JSON.stringify(s))}
+const days=document.getElementById('days'),totalEl=document.getElementById('total'),phy=document.getElementById('phy'),chem=document.getElementById('chem'),pct=document.getElementById('pct'),fill=document.getElementById('fill');
+list.addEventListener('change',e=>{if(e.target.matches('input')){s[e.target.dataset.d][e.target.dataset.s]=e.target.checked?1:0;draw()}});
+document.getElementById('reset').onclick=()=>{if(confirm('Reset all progress?')){s=Array.from({length:30},()=>[0,0,0]);draw()}};draw();
+</script></main><script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script></body></html>
