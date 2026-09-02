@@ -1,16 +1,10 @@
 {
   "name": "NEET PCB 30-Day Tracker",
-  "short_name": "PCB Tracker",
-  "start_url": ".",
+  "short_name": "NEET Tracker",
+  "description": "30-day Physics, Chemistry and Biology question practice tracker for NEET preparation.",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#eef2ff",
-  "theme_color": "#4338ca",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#eef3ff",
+  "theme_color": "#4938c9",
+  "orientation": "portrait"
 }

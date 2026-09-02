@@ -2,90 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#4338ca">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
 <title>NEET PCB 30-Day Tracker</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(135deg,#eef2ff,#ecfeff,#fdf2f8);color:#172033}
-.wrap{max-width:760px;margin:auto;padding:15px}h1{color:#312e81;margin:4px 0}.sub{color:#64748b;font-size:13px;margin-bottom:12px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:17px;padding:14px;margin:10px 0;box-shadow:0 5px 16px #1e293b0d}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{padding:11px;border-radius:13px;background:#f8fafc;text-align:center}.stat b{display:block;font-size:20px;color:#312e81}
-.progress{height:11px;background:#e2e8f0;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#4f46e5,#06b6d4);width:0}
-.day{border:1px solid #e2e8f0;border-radius:14px;margin:9px 0;overflow:hidden;background:#fff}.dayhead{padding:11px 12px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
-.dayhead.done{background:#dcfce7;color:#166534}.subject{padding:11px 12px;border-top:1px solid #eef2f7;display:grid;grid-template-columns:105px 1fr 34px;gap:8px;align-items:center}
-.subject.physics{border-left:5px solid #4f46e5}.subject.chemistry{border-left:5px solid #f97316}.subject.biology{border-left:5px solid #16a34a}
-input[type=number]{width:100%;padding:9px;border:1px solid #dbe2f0;border-radius:9px;font-size:16px}.check{width:23px;height:23px;accent-color:#16a34a}
-button{border:1px solid #dbe2f0;background:#fff;border-radius:10px;padding:9px 12px;font-weight:700;color:#334155}.danger{background:#fff1f2;color:#be123c;border-color:#fecaca}
-.note{font-size:12px;color:#64748b;margin-top:8px}
-@media(max-width:520px){.summary{grid-template-columns:1fr 1fr 1fr}.subject{grid-template-columns:90px 1fr 32px}}
+:root{--bg:#eef2ff;--card:#fff;--ink:#172033;--muted:#64748b;--primary:#4f46e5;--phy:#4f46e5;--chem:#f97316;--bio:#16a34a;--line:#e2e8f0;--good:#16a34a;--goodbg:#dcfce7}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 55%);color:var(--ink)}
+.wrap{max-width:680px;margin:auto;padding:18px 14px 40px}.top h1{font-size:28px;line-height:1.05;margin:4px 0 6px;color:#302e81}.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:0 6px 24px rgba(30,41,59,.06)}
+.settings{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.settings label{font-size:13px;font-weight:700;color:var(--muted)}.dateInput{border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;font:inherit;font-weight:700;color:var(--ink);background:#fff}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.stat{background:#f8fafc;border-radius:16px;padding:13px}.label{font-size:12px;color:var(--muted);font-weight:700}.big{font-size:23px;font-weight:850;margin-top:3px}.progressCard{margin-bottom:12px}.bar{height:11px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0 5px}.fill{height:100%;width:0;background:var(--primary);transition:.2s}.progressText{display:flex;justify-content:space-between;align-items:center}.progressText .big{margin:0}
+.sectionTitle{font-weight:850;font-size:17px;margin-bottom:10px}.hint{font-size:12px;color:var(--muted);margin-top:5px}
+.day{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:10px 0;background:#fff}.dayHeader{width:100%;border:0;background:#f8fafc;padding:14px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font:inherit}.dayHeader:active{transform:scale(.998)}.dayHeaderLeft{min-width:0}.dayTitle{font-size:18px;font-weight:850}.dateLine{font-size:12px;color:var(--muted);font-weight:650;margin-top:2px}.dayMeta{text-align:right;white-space:nowrap}.dayTotal{font-weight:850;font-size:14px}.chev{font-size:18px;color:var(--muted);margin-left:5px}.day.done .dayHeader{background:var(--goodbg)}.dayBody{display:none;padding:12px}.day.open .dayBody{display:block}.todayBadge{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:99px;background:#e0e7ff;color:#3730a3;font-size:10px;font-weight:850;vertical-align:2px}
+.subject{border:1px solid var(--line);border-radius:16px;padding:12px;margin:8px 0;display:grid;grid-template-columns:9px 1fr auto;gap:11px;align-items:center}.stripe{width:9px;height:54px;border-radius:9px}.stripe.phy{background:var(--phy)}.stripe.chem{background:var(--chem)}.stripe.bio{background:var(--bio)}.subject.done{background:var(--goodbg);border-color:#bbf7d0}.subjectName{font-weight:850}.subjectHint{font-size:11px;color:var(--muted);margin-top:2px}.qInput{width:115px;height:54px;border:2px solid #cbd5e1;border-radius:14px;padding:0 12px;text-align:center;font-size:22px;font-weight:800;color:var(--ink);outline:none;background:#fff}.qInput:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.13)}.subject.done .qInput{border-color:#86efac}.quick{display:flex;gap:6px;margin-top:7px}.quick button{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:6px 9px;font-weight:750;color:#475569}.quick button:active{transform:scale(.96)}
+.daySummary{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-radius:14px;padding:11px 12px;margin-top:10px}.daySummary strong{font-size:16px}.complete{color:var(--good);font-weight:850;font-size:13px}.actions{display:flex;gap:8px;margin-top:14px}.btn{border:1px solid #cbd5e1;background:#fff;border-radius:12px;padding:10px 13px;font-weight:750;color:var(--ink)}.btn.primary{background:var(--primary);color:white;border-color:var(--primary)}.note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
+@media(max-width:500px){.wrap{padding:16px 11px 30px}.top h1{font-size:25px}.settings{align-items:flex-start}.dateInput{max-width:160px}.subject{grid-template-columns:7px 1fr auto;gap:9px;padding:10px}.qInput{width:105px;height:52px}.dayHeader{padding:13px}.dayTitle{font-size:17px}}
 </style>
 </head>
 <body>
-<main class="wrap">
-<h1>NEET PCB 30-Day Tracker</h1>
-<div class="sub">150 questions every day • 50 Physics + 50 Chemistry + 50 Biology</div>
+<div class="wrap">
+  <div class="top"><h1>NEET PCB 30-Day Tracker</h1><div class="sub">Practice questions by number • 30-day progress</div></div>
 
-<div class="card">
-<div class="summary">
-<div class="stat"><span>Questions</span><b id="total">0 / 4500</b></div>
-<div class="stat"><span>Days complete</span><b id="days">0 / 30</b></div>
-<div class="stat"><span>Progress</span><b id="pct">0%</b></div>
-</div>
-<div style="margin-top:12px" class="progress"><div id="bar" class="fill"></div></div>
-<div class="note">Enter the number completed for each subject. When it reaches <b>50/50</b>, that subject turns green and is marked complete.</div>
-</div>
+  <div class="card settings">
+    <div><label for="startDate">30-day tracker start date</label><div class="hint">Each day's date is calculated automatically.</div></div>
+    <input id="startDate" class="dateInput" type="date">
+  </div>
 
-<div id="daysList"></div>
+  <div class="stats">
+    <div class="stat"><div class="label">Days complete</div><div class="big" id="daysDone">0 / 30</div></div>
+    <div class="stat"><div class="label">Total questions</div><div class="big" id="totalQ">0 / 4500</div></div>
+    <div class="stat"><div class="label">Physics</div><div class="big" id="phy">0</div></div>
+    <div class="stat"><div class="label">Chemistry</div><div class="big" id="chem">0</div></div>
+    <div class="stat"><div class="label">Biology</div><div class="big" id="bio">0</div></div>
+  </div>
 
-<div class="card">
-<button class="danger" id="reset">Reset all 30 days</button>
-<div class="note">This reset affects only this tracker.</div>
+  <div class="card progressCard"><div class="label">Overall progress</div><div class="bar"><div class="fill" id="fill"></div></div><div class="progressText"><div class="big" id="pct">0%</div><div class="label" id="progressNote">0 / 4500 planned</div></div></div>
+
+  <div class="card">
+    <div class="sectionTitle">Daily question practice</div>
+    <div class="hint">Today's track opens automatically. Tap any other day to expand it and view/edit previous days.</div>
+    <div id="list"></div>
+  </div>
+
+  <div class="actions"><button class="btn" id="openToday">Open today</button><button class="btn" id="reset">Reset all</button></div>
+  <div class="note">Enter any number of questions — more than 50 is allowed. A subject turns green automatically when you reach 50 or more. The daily total is Physics + Chemistry + Biology. Your data is saved on this device/browser.</div>
 </div>
-</main>
 <script>
-const KEY="neet-pcb-30-v2";
-let data=JSON.parse(localStorage.getItem(KEY)||"null")||Array.from({length:30},()=>[0,0,0]);
-const save=()=>{localStorage.setItem(KEY,JSON.stringify(data));render()};
-const clamp=n=>Math.max(0,Math.min(50,Number(n)||0));
-function render(){
- let total=data.flat().reduce((a,b)=>a+b,0);
- let full=data.filter(d=>d.every(x=>x===50)).length;
- document.getElementById("total").textContent=`${total} / 4500`;
- document.getElementById("days").textContent=`${full} / 30`;
- let pct=Math.round(total/4500*100);
- document.getElementById("pct").textContent=pct+"%";
- document.getElementById("bar").style.width=pct+"%";
- document.getElementById("daysList").innerHTML=data.map((d,i)=>{
-   const done=d.every(x=>x===50);
-   return `<div class="day">
-   <div class="dayhead ${done?"done":""}"><b>Day ${i+1}</b><span>${done?"✓ Complete":"0–150 questions"}</span></div>
-   ${["Physics","Chemistry","Biology"].map((s,j)=>{
-      let v=d[j], cls=s.toLowerCase(), complete=v===50;
-      return `<div class="subject ${cls}" style="${complete?"background:#dcfce7":""}">
-        <b>${s}</b>
-        <input aria-label="${s} questions for Day ${i+1}" type="number" min="0" max="50" value="${v}" data-day="${i}" data-sub="${j}">
-        <input class="check" type="checkbox" ${complete?"checked":""} data-check="${i}" data-sub="${j}" title="50 completed">
-      </div>`;
-   }).join("")}
-   </div>`;
- }).join("");
+const KEY="neet-pcb-30-day-v2";
+const OLD_KEY="neet-pcb-30-day-v1";
+const todayISO=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+const makeDays=()=>Array.from({length:30},()=>[0,0,0]);
+let saved=JSON.parse(localStorage.getItem(KEY)||"null");
+if(!saved){
+  const old=JSON.parse(localStorage.getItem(OLD_KEY)||"null");
+  saved={startDate:todayISO(),days:makeDays()};
+  if(Array.isArray(old)) saved.days=old.map(x=>[x?.[0]?50:0,x?.[1]?50:0,x?.[2]?50:0]);
 }
-document.getElementById("daysList").addEventListener("input",e=>{
- if(e.target.dataset.day!==undefined){data[+e.target.dataset.day][+e.target.dataset.sub]=clamp(e.target.value);save()}
-});
-document.getElementById("daysList").addEventListener("change",e=>{
- if(e.target.dataset.check!==undefined){
-   const d=+e.target.dataset.check,s=+e.target.dataset.sub;
-   data[d][s]=e.target.checked?50:0;save();
- }
-});
-document.getElementById("reset").onclick=()=>{
- if(confirm("Reset all 30 days? This will erase the question counts in this tracker.")){
-   data=Array.from({length:30},()=>[0,0,0]);save();
- }
-};
-render();
+if(!saved.days||saved.days.length!==30) saved.days=makeDays();
+if(!saved.startDate) saved.startDate=todayISO();
+let state=saved;
+const list=document.getElementById("list");
+const names=["Physics","Chemistry","Biology"], cls=["phy","chem","bio"];
+function dateForDay(i){const d=new Date(state.startDate+"T00:00:00");d.setDate(d.getDate()+i);return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});}
+function currentDayIndex(){const start=new Date(state.startDate+"T00:00:00");const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.max(0,Math.min(29,Math.floor((today-start)/86400000)));}
+function build(){list.innerHTML="";const cur=currentDayIndex();for(let d=0;d<30;d++){
+  const wrap=document.createElement("div");wrap.className="day"+(d===cur?" open":"");wrap.dataset.day=d;
+  wrap.innerHTML=`<button class="dayHeader" type="button"><div class="dayHeaderLeft"><div class="dayTitle">Day ${d+1}${d===cur?'<span class="todayBadge">TODAY</span>':''}</div><div class="dateLine">${dateForDay(d)}</div></div><div class="dayMeta"><div class="dayTotal" id="dayTotal${d}">0 questions</div><span class="chev">⌄</span></div></button><div class="dayBody"></div>`;
+  const body=wrap.querySelector(".dayBody");
+  names.forEach((name,s)=>{const item=document.createElement("div");item.className="subject";item.innerHTML=`<div class="stripe ${cls[s]}"></div><div><div class="subjectName">${name}</div><div class="subjectHint">${s===0?'Physics questions':s===1?'Chemistry questions':'Biology questions'} • green at 50+</div><div class="quick"><button type="button" data-d="${d}" data-s="${s}" data-add="-10">−10</button><button type="button" data-d="${d}" data-s="${s}" data-add="10">+10</button><button type="button" data-d="${d}" data-s="${s}" data-add="50">+50</button></div></div><input class="qInput" type="number" inputmode="numeric" min="0" step="1" placeholder="0" aria-label="${name} questions for Day ${d+1}" data-d="${d}" data-s="${s}">`;body.appendChild(item)});
+  const summary=document.createElement("div");summary.className="daySummary";summary.innerHTML=`<span>Daily total</span><strong id="summary${d}">0 questions</strong><span class="complete" id="complete${d}"></span>`;body.appendChild(summary);
+  list.appendChild(wrap);
+}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function render(){
+  const inputs=list.querySelectorAll(".qInput");inputs.forEach(x=>{const d=+x.dataset.d,s=+x.dataset.s;x.value=state.days[d][s]||0;const sub=x.closest('.subject');sub.classList.toggle('done',(state.days[d][s]||0)>=50)});
+  let totals=[0,0,0];state.days.forEach(day=>day.forEach((v,s)=>totals[s]+=Number(v)||0));
+  const total=totals.reduce((a,b)=>a+b,0);const full=state.days.filter(day=>day.every(v=>Number(v)>=50)).length;const p=Math.round(Math.min(total/4500,1)*100);
+  document.getElementById("daysDone").textContent=`${full} / 30`;document.getElementById("totalQ").textContent=`${total} / 4500`;document.getElementById("phy").textContent=totals[0];document.getElementById("chem").textContent=totals[1];document.getElementById("bio").textContent=totals[2];document.getElementById("pct").textContent=p+"%";document.getElementById("fill").style.width=p+"%";document.getElementById("progressNote").textContent=`${total} / 4500 planned`;
+  state.days.forEach((day,d)=>{const t=day.reduce((a,b)=>a+(Number(b)||0),0),done=day.every(v=>Number(v)>=50);document.getElementById('dayTotal'+d).textContent=`${t} question${t===1?'':'s'}`;document.getElementById('summary'+d).textContent=`${t} question${t===1?'':'s'}`;document.getElementById('complete'+d).textContent=done?'✓ Complete':'';document.querySelector(`[data-day="${d}"]`).classList.toggle('done',done)});
+  document.getElementById("startDate").value=state.startDate;save();
+}
+function setOpen(d){list.querySelectorAll('.day').forEach(x=>x.classList.remove('open'));const el=document.querySelector(`[data-day="${d}"]`);if(el){el.classList.add('open');el.scrollIntoView({behavior:'smooth',block:'start'})}}
+list.addEventListener('click',e=>{const header=e.target.closest('.dayHeader');if(header){const day=header.closest('.day');day.classList.toggle('open');return}const btn=e.target.closest('button[data-add]');if(btn){const d=+btn.dataset.d,s=+btn.dataset.s;state.days[d][s]=Math.max(0,(Number(state.days[d][s])||0)+Number(btn.dataset.add));render();}});
+list.addEventListener('input',e=>{if(e.target.matches('.qInput')){const d=+e.target.dataset.d,s=+e.target.dataset.s;state.days[d][s]=Math.max(0,Math.floor(Number(e.target.value)||0));render();}});
+document.getElementById('startDate').addEventListener('change',e=>{if(e.target.value){state.startDate=e.target.value;build();render();setOpen(currentDayIndex())}});
+document.getElementById('openToday').onclick=()=>{build();render();setOpen(currentDayIndex())};
+document.getElementById('reset').onclick=()=>{if(confirm('Reset all 30 days and question counts?')){state={startDate:todayISO(),days:makeDays()};build();render();setOpen(0)}};
+build();render();
 </script>
-<script>if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");</script>
-</body></html>
+</body>
+</html>
