@@ -1,7 +1,7 @@
 {
-  "name": "NEET PCB 30-Day Tracker",
+  "name": "NEET PCB 120-Day Tracker",
   "short_name": "NEET Tracker",
-  "description": "30-day Physics, Chemistry and Biology question practice tracker for NEET preparation.",
+  "description": "120-day Physics, Chemistry and Biology question-practice tracker for NEET preparation, from 3 September to 31 December 2026.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#eef3ff",

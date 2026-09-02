@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#4f46e5">
-<title>NEET PCB 30-Day Tracker</title>
+<title>NEET PCB 120-Day Tracker</title>
 <style>
 :root{--bg:#eef2ff;--card:#fff;--ink:#172033;--muted:#64748b;--primary:#4f46e5;--phy:#4f46e5;--chem:#f97316;--bio:#16a34a;--line:#e2e8f0;--good:#16a34a;--goodbg:#dcfce7}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 55%);color:var(--ink)}
@@ -21,22 +21,22 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><h1>NEET PCB 30-Day Tracker</h1><div class="sub">Practice questions by number • 30-day progress</div></div>
+  <div class="top"><h1>NEET PCB 120-Day Tracker</h1><div class="sub">Practice questions by number • 120-day progress</div></div>
 
   <div class="card settings">
-    <div><label for="startDate">30-day tracker start date</label><div class="hint">Each day's date is calculated automatically.</div></div>
-    <input id="startDate" class="dateInput" type="date">
+    <div><label>Tracker period</label><div class="hint">3 September 2026 → 31 December 2026 • 120 days</div></div>
+    <div style="font-weight:850;color:var(--primary);white-space:nowrap">120 DAYS</div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="label">Days complete</div><div class="big" id="daysDone">0 / 30</div></div>
-    <div class="stat"><div class="label">Total questions</div><div class="big" id="totalQ">0 / 4500</div></div>
+    <div class="stat"><div class="label">Days complete</div><div class="big" id="daysDone">0 / 120</div></div>
+    <div class="stat"><div class="label">Total questions</div><div class="big" id="totalQ">0 / 18000</div></div>
     <div class="stat"><div class="label">Physics</div><div class="big" id="phy">0</div></div>
     <div class="stat"><div class="label">Chemistry</div><div class="big" id="chem">0</div></div>
     <div class="stat"><div class="label">Biology</div><div class="big" id="bio">0</div></div>
   </div>
 
-  <div class="card progressCard"><div class="label">Overall progress</div><div class="bar"><div class="fill" id="fill"></div></div><div class="progressText"><div class="big" id="pct">0%</div><div class="label" id="progressNote">0 / 4500 planned</div></div></div>
+  <div class="card progressCard"><div class="label">Overall progress</div><div class="bar"><div class="fill" id="fill"></div></div><div class="progressText"><div class="big" id="pct">0%</div><div class="label" id="progressNote">0 / 18000 planned</div></div></div>
 
   <div class="card">
     <div class="sectionTitle">Daily question practice</div>
@@ -48,24 +48,25 @@
   <div class="note">Enter any number of questions — more than 50 is allowed. A subject turns green automatically when you reach 50 or more. The daily total is Physics + Chemistry + Biology. Your data is saved on this device/browser.</div>
 </div>
 <script>
-const KEY="neet-pcb-30-day-v2";
-const OLD_KEY="neet-pcb-30-day-v1";
+const KEY="neet-pcb-120-day-v1";
+const OLD_KEY="neet-pcb-30-day-v2";
 const todayISO=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
-const makeDays=()=>Array.from({length:30},()=>[0,0,0]);
+const makeDays=()=>Array.from({length:120},()=>[0,0,0]);
 let saved=JSON.parse(localStorage.getItem(KEY)||"null");
 if(!saved){
   const old=JSON.parse(localStorage.getItem(OLD_KEY)||"null");
-  saved={startDate:todayISO(),days:makeDays()};
+  saved={startDate:"2026-09-03",days:makeDays()};
   if(Array.isArray(old)) saved.days=old.map(x=>[x?.[0]?50:0,x?.[1]?50:0,x?.[2]?50:0]);
+  if(saved.days.length<120) saved.days.push(...Array.from({length:120-saved.days.length},()=>[0,0,0]));
 }
-if(!saved.days||saved.days.length!==30) saved.days=makeDays();
-if(!saved.startDate) saved.startDate=todayISO();
+if(!saved.days||saved.days.length!==120) saved.days=makeDays();
+saved.startDate="2026-09-03";
 let state=saved;
 const list=document.getElementById("list");
 const names=["Physics","Chemistry","Biology"], cls=["phy","chem","bio"];
 function dateForDay(i){const d=new Date(state.startDate+"T00:00:00");d.setDate(d.getDate()+i);return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});}
-function currentDayIndex(){const start=new Date(state.startDate+"T00:00:00");const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.max(0,Math.min(29,Math.floor((today-start)/86400000)));}
-function build(){list.innerHTML="";const cur=currentDayIndex();for(let d=0;d<30;d++){
+function currentDayIndex(){const start=new Date(state.startDate+"T00:00:00");const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.max(0,Math.min(119,Math.floor((today-start)/86400000)));}
+function build(){list.innerHTML="";const cur=currentDayIndex();for(let d=0;d<120;d++){
   const wrap=document.createElement("div");wrap.className="day"+(d===cur?" open":"");wrap.dataset.day=d;
   wrap.innerHTML=`<button class="dayHeader" type="button"><div class="dayHeaderLeft"><div class="dayTitle">Day ${d+1}${d===cur?'<span class="todayBadge">TODAY</span>':''}</div><div class="dateLine">${dateForDay(d)}</div></div><div class="dayMeta"><div class="dayTotal" id="dayTotal${d}">0 questions</div><span class="chev">⌄</span></div></button><div class="dayBody"></div>`;
   const body=wrap.querySelector(".dayBody");
@@ -77,17 +78,16 @@ function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 function render(){
   const inputs=list.querySelectorAll(".qInput");inputs.forEach(x=>{const d=+x.dataset.d,s=+x.dataset.s;x.value=state.days[d][s]||0;const sub=x.closest('.subject');sub.classList.toggle('done',(state.days[d][s]||0)>=50)});
   let totals=[0,0,0];state.days.forEach(day=>day.forEach((v,s)=>totals[s]+=Number(v)||0));
-  const total=totals.reduce((a,b)=>a+b,0);const full=state.days.filter(day=>day.every(v=>Number(v)>=50)).length;const p=Math.round(Math.min(total/4500,1)*100);
-  document.getElementById("daysDone").textContent=`${full} / 30`;document.getElementById("totalQ").textContent=`${total} / 4500`;document.getElementById("phy").textContent=totals[0];document.getElementById("chem").textContent=totals[1];document.getElementById("bio").textContent=totals[2];document.getElementById("pct").textContent=p+"%";document.getElementById("fill").style.width=p+"%";document.getElementById("progressNote").textContent=`${total} / 4500 planned`;
+  const total=totals.reduce((a,b)=>a+b,0);const full=state.days.filter(day=>day.every(v=>Number(v)>=50)).length;const p=Math.round(Math.min(total/18000,1)*100);
+  document.getElementById("daysDone").textContent=`${full} / 120`;document.getElementById("totalQ").textContent=`${total} / 18000`;document.getElementById("phy").textContent=totals[0];document.getElementById("chem").textContent=totals[1];document.getElementById("bio").textContent=totals[2];document.getElementById("pct").textContent=p+"%";document.getElementById("fill").style.width=p+"%";document.getElementById("progressNote").textContent=`${total} / 18000 planned`;
   state.days.forEach((day,d)=>{const t=day.reduce((a,b)=>a+(Number(b)||0),0),done=day.every(v=>Number(v)>=50);document.getElementById('dayTotal'+d).textContent=`${t} question${t===1?'':'s'}`;document.getElementById('summary'+d).textContent=`${t} question${t===1?'':'s'}`;document.getElementById('complete'+d).textContent=done?'✓ Complete':'';document.querySelector(`[data-day="${d}"]`).classList.toggle('done',done)});
-  document.getElementById("startDate").value=state.startDate;save();
+  save();
 }
 function setOpen(d){list.querySelectorAll('.day').forEach(x=>x.classList.remove('open'));const el=document.querySelector(`[data-day="${d}"]`);if(el){el.classList.add('open');el.scrollIntoView({behavior:'smooth',block:'start'})}}
 list.addEventListener('click',e=>{const header=e.target.closest('.dayHeader');if(header){const day=header.closest('.day');day.classList.toggle('open');return}const btn=e.target.closest('button[data-add]');if(btn){const d=+btn.dataset.d,s=+btn.dataset.s;state.days[d][s]=Math.max(0,(Number(state.days[d][s])||0)+Number(btn.dataset.add));render();}});
 list.addEventListener('input',e=>{if(e.target.matches('.qInput')){const d=+e.target.dataset.d,s=+e.target.dataset.s;state.days[d][s]=Math.max(0,Math.floor(Number(e.target.value)||0));render();}});
-document.getElementById('startDate').addEventListener('change',e=>{if(e.target.value){state.startDate=e.target.value;build();render();setOpen(currentDayIndex())}});
 document.getElementById('openToday').onclick=()=>{build();render();setOpen(currentDayIndex())};
-document.getElementById('reset').onclick=()=>{if(confirm('Reset all 30 days and question counts?')){state={startDate:todayISO(),days:makeDays()};build();render();setOpen(0)}};
+document.getElementById('reset').onclick=()=>{if(confirm('Reset all 120 days and question counts?')){state={startDate:"2026-09-03",days:makeDays()};build();render();setOpen(0)}};
 build();render();
 </script>
 </body>
