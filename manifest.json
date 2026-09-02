@@ -1,1 +1,16 @@
-{"name":"NEET PCB 30-Day Tracker","short_name":"PCB Tracker","start_url":"./","display":"standalone","background_color":"#f5f7fb","theme_color":"#111827","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name": "NEET PCB 30-Day Tracker",
+  "short_name": "PCB Tracker",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#eef2ff",
+  "theme_color": "#4338ca",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
